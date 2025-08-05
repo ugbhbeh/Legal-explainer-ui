@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import api from "../services/api"
 
 export default function Chat() {
   const [input, setInput] = useState("");
@@ -9,35 +10,27 @@ export default function Chat() {
     if (!input.trim()) return;
 
     const userMessage = { id: Date.now(), role: "user", text: input };
-    setMessages((msgs) => [...msgs, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
 
     try {
-      const response = await fetch("/chats", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ input }),
-      });
+      const response = await api.post("/chats", { input });
 
-      const data = await response.json();
+      const aiMessage = {
+        id: Date.now() + 1,
+        role: "ai",
+        text: response.data.conversation.response,
+      };
 
-      if (response.ok) {
-        const aiMessage = {
-          id: Date.now() + 1,
-          role: "ai",
-          text: data.conversation.response,
-        };
-        setMessages((msgs) => [...msgs, aiMessage]);
+      setMessages((prev) => [...prev, aiMessage]);
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data?.error || "Server error");
       } else {
-        alert(data.error || "Error sending message");
+        alert("Network error");
+        console.error(error);
       }
-    } catch (err) {
-      alert("Network error");
-      console.log(err)
     } finally {
       setLoading(false);
     }
@@ -52,8 +45,7 @@ export default function Chat() {
 
   return (
     <div>
-      <div
-      >
+      <div>
         {messages.map(({ id, role, text }) => (
           <div key={id} style={{ marginBottom: 8 }}>
             <b>{role === "user" ? "You:" : "AI:"}</b> {text}
