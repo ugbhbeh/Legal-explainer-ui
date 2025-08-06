@@ -17,13 +17,16 @@ function App() {
  
  
     return (
-    <Router>
-      <Routes>
-        <Route path="/" element = <Home/> />
-        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
-        <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/" />} />
-      </Routes>
-    </Router>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+              <Route path="/" element={<Home isAuthenticated={isAuthenticated} /> } />
+              <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to ="/" /> } />
+              <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to ="/" /> } />
+        </Routes>    
+      </AuthProvider>
+    </BrowserRouter>
+     
   )
   
 }
