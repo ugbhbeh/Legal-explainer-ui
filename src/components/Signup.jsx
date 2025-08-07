@@ -33,11 +33,7 @@ function Signup() {
       setError('All fields are required');
       return;
     }
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters.');
-      return;
-    }
-
+    
     setIsSubmitting(true);
     try {
       const response = await api.post('/users', formData);

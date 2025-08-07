@@ -61,7 +61,8 @@ export default function Chat() {
         ))}
       </div>
 
-      <textarea
+      <textarea 
+      name="textarea"
         rows={3}
         value={input}
         onChange={(e) => setInput(e.target.value)}

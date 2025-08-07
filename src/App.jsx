@@ -4,32 +4,29 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import AuthProvider from './services/Authprovider'
-import { useState, useEffect } from 'react';
+import AuthContext from './services/AuthContext'
+import { useContext } from 'react'
 
-function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
-  useEffect(() => {
-    const handleStorage = () => {
-      setIsAuthenticated(!!localStorage.getItem('token'));
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
- 
- 
-    return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-              <Route path="/" element={<Home isAuthenticated={isAuthenticated} /> } />
-              <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to ="/" /> } />
-              <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to ="/" /> } />
-        </Routes>    
-      </AuthProvider>
-    </BrowserRouter>
-     
-  )
-  
+function AppRoutes() {
+  const { isLoggedIn } = useContext(AuthContext);
+
+  return (
+    <Routes>
+      <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
+      <Route path="/login" element={!isLoggedIn ? <Login /> : <Navigate to="/" />} />
+      <Route path="/signup" element={!isLoggedIn ? <Signup /> : <Navigate to="/" />} />
+    </Routes>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
+
+export default App;
