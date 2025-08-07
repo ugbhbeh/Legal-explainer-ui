@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import api from "../services/api"
+import  { useState, useContext } from "react";
+import api from "../services/api";
+import AuthContext from "../services/AuthContext";
 
 export default function Chat() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const { userId, isLoggedIn } = useContext(AuthContext);
+
   async function sendMessage() {
+    if (!isLoggedIn) {
+      alert("You must be logged in to chat.");
+      return;
+    }
     if (!input.trim()) return;
 
     const userMessage = { id: Date.now(), role: "user", text: input };
@@ -15,7 +22,8 @@ export default function Chat() {
     setLoading(true);
 
     try {
-      const response = await api.post("/chats", { input });
+    
+      const response = await api.post("/chats", { input, userId });
 
       const aiMessage = {
         id: Date.now() + 1,

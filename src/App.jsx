@@ -4,7 +4,6 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import AuthProvider from './services/Authprovider'
-import AuthContext from './services/AuthContext'
 import { useState, useEffect } from 'react';
 
 function App() {

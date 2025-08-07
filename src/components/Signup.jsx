@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
+
+import AuthContext from '../services/AuthContext.js';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ function Signup() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,7 +41,11 @@ function Signup() {
     setIsSubmitting(true);
     try {
       const response = await api.post('/users', formData);
-      if (response.status === 201) {
+      if (response.status === 201 && response.data.token && response.data.userId) {
+        login(response.data.userId, response.data.token);
+        navigate('/');
+      } else {
+        // fallback: if no token returned, redirect to login
         navigate('/login');
       }
     } catch (error) {
@@ -57,16 +65,16 @@ function Signup() {
     setIsSubmitting(true);
     try {
       const res = await api.post('/users/guest');
-      console.log(res)
-
       if (res.status !== 200) {
-      throw new Error('Guest login failed');
-    }
-
-    const data = res.data;
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);
-      navigate('/');
+        throw new Error('Guest login failed');
+      }
+      const data = res.data;
+      if (data.token && data.userId) {
+        login(data.userId, data.token);
+        navigate('/');
+      } else {
+        setError('Guest login failed. Please try again.');
+      }
     } catch (err) {
       console.error('Guest login error:', err);
       setError('Guest login failed. Please try again.');
