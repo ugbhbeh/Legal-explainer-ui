@@ -16,11 +16,11 @@ function Login() {
         email,
         password
       });
-      if (response.data.token && response.data.userId) {
-        login(response.data.userId, response.data.token);
-        navigate('/');
+      if (response?.data?.token && response?.data?.userId) {
+  login(response.data.userId, response.data.token);
+  navigate('/');
+;
       } else {
-        // fallback: if no token returned, show error
         alert('Login failed. Please try again.');
       }
     } catch (error) {
