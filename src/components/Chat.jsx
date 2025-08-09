@@ -8,19 +8,18 @@ export default function Chat() {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const { userId, isLoggedIn } = useContext(AuthContext);
-
+  
   async function handleFileUpload() {
     if (!file) return null;
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await api.post("/upload", formData, {
+    const res = await api.post("/documents/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    return res.data.documentId; 
+    return res.data.documentId;
   }
-
   async function sendMessage() {
     if (!isLoggedIn) {
       alert("You must be logged in to chat.");
@@ -35,26 +34,37 @@ export default function Chat() {
     setLoading(true);
 
     try {
-      let documentId = null;
+      let aiMessage;
+
       if (file) {
-        documentId = await handleFileUpload();
+        const documentId = await handleFileUpload();
+
+        const response = await api.post("/documents", {
+          question: input || "Explain this document",
+          documentId,
+        });
+
+        aiMessage = {
+          id: Date.now() + 1,
+          role: "ai",
+          text: response.data.answer,
+        };
+
+      } else {
+        const response = await api.post("/chats", {
+          input,
+          userId,
+        });
+
+        aiMessage = {
+          id: Date.now() + 1,
+          role: "ai",
+          text: response.data.conversation.response,
+        };
       }
 
-      const payload = file
-        ? { question: input || "Explain this document", documentId }
-        : { input, userId };
-
-      const endpoint = file ? "/documents" : "/chats";
-
-      const response = await api.post(endpoint, payload);
-
-      const aiMessage = {
-        id: Date.now() + 1,
-        role: "ai",
-        text: file ? response.data.answer : response.data.conversation.response,
-      };
-
       setMessages((prev) => [...prev, aiMessage]);
+
     } catch (error) {
       if (error.response) {
         alert(error.response.data?.error || "Server error");
@@ -101,7 +111,10 @@ export default function Chat() {
         style={{ display: "block", marginTop: 8 }}
       />
 
-      <button onClick={sendMessage} disabled={loading || (!input.trim() && !file)}>
+      <button
+        onClick={sendMessage}
+        disabled={loading || (!input.trim() && !file)}
+      >
         {loading ? "Sending..." : "Send"}
       </button>
     </div>
