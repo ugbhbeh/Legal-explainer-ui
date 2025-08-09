@@ -1,4 +1,4 @@
-import  { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import api from "../services/api";
 import AuthContext from "../services/AuthContext";
 
@@ -6,29 +6,52 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [file, setFile] = useState(null);
   const { userId, isLoggedIn } = useContext(AuthContext);
+
+  async function handleFileUpload() {
+    if (!file) return null;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await api.post("/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res.data.documentId; 
+  }
 
   async function sendMessage() {
     if (!isLoggedIn) {
       alert("You must be logged in to chat.");
       return;
     }
-    if (!input.trim()) return;
+    if (!input.trim() && !file) return;
 
-    const userMessage = { id: Date.now(), role: "user", text: input };
+    const userMessage = { id: Date.now(), role: "user", text: input || file.name };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setFile(null);
     setLoading(true);
 
     try {
-    
-      const response = await api.post("/chats", { input, userId });
+      let documentId = null;
+      if (file) {
+        documentId = await handleFileUpload();
+      }
+
+      const payload = file
+        ? { question: input || "Explain this document", documentId }
+        : { input, userId };
+
+      const endpoint = file ? "/documents" : "/chats";
+
+      const response = await api.post(endpoint, payload);
 
       const aiMessage = {
         id: Date.now() + 1,
         role: "ai",
-        text: response.data.conversation.response,
+        text: file ? response.data.answer : response.data.conversation.response,
       };
 
       setMessages((prev) => [...prev, aiMessage]);
@@ -61,8 +84,7 @@ export default function Chat() {
         ))}
       </div>
 
-      <textarea 
-      name="textarea"
+      <textarea
         rows={3}
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -71,7 +93,15 @@ export default function Chat() {
         disabled={loading}
       />
 
-      <button onClick={sendMessage} disabled={loading || !input.trim()}>
+      <input
+        type="file"
+        accept="application/pdf"
+        onChange={(e) => setFile(e.target.files[0])}
+        disabled={loading}
+        style={{ display: "block", marginTop: 8 }}
+      />
+
+      <button onClick={sendMessage} disabled={loading || (!input.trim() && !file)}>
         {loading ? "Sending..." : "Send"}
       </button>
     </div>
