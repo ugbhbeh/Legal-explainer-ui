@@ -8,13 +8,13 @@ export default function Chat() {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const { userId, isLoggedIn } = useContext(AuthContext);
-  
+
   async function handleFileUpload() {
     if (!file) return null;
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await api.post("/documents/upload", formData, {
+    const res = await api.post("/document/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
@@ -39,7 +39,7 @@ export default function Chat() {
       if (file) {
         const documentId = await handleFileUpload();
 
-        const response = await api.post("/documents", {
+        const response = await api.post("/document", {
           question: input || "Explain this document",
           documentId,
         });
