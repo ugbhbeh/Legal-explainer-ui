@@ -7,4 +7,5 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
+
 export default AuthContext;
