@@ -10,6 +10,10 @@ export default function Chat() {
   const { userId, isLoggedIn } = useContext(AuthContext);
 
   async function handleFileUpload() {
+    if (!isLoggedIn) {
+      alert("You must be logged in to upload files.");
+      return null;
+    }
     if (!file) return null;
     const formData = new FormData();
     formData.append("file", file);
@@ -21,11 +25,12 @@ export default function Chat() {
     return res.data.documentId;
   }
   async function sendMessage() {
-    if (!isLoggedIn) {
-      alert("You must be logged in to chat.");
+    if (!input.trim() && !file) return;
+    
+    if (file && !isLoggedIn) {
+      alert("You must be logged in to share files. You can still chat without logging in!");
       return;
     }
-    if (!input.trim() && !file) return;
 
     const userMessage = { id: Date.now(), role: "user", text: input || file.name };
     setMessages((prev) => [...prev, userMessage]);
@@ -42,6 +47,7 @@ export default function Chat() {
         const response = await api.post("/document", {
           question: input || "Explain this document",
           documentId,
+          userId,
         });
 
         aiMessage = {
