@@ -47,7 +47,7 @@ export default function Chat() {
         const response = await api.post("/document", {
           question: input || "Explain this document",
           documentId,
-          tone: "neutral" // You can make this configurable if needed
+          tone: "neutral" // make this configurable 
         });
 
         aiMessage = {

@@ -1,36 +1,46 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "./AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
-  
-  // Initialize state as null, then check localStorage in useEffect
+
   const [userId, setUserId] = useState(null);
- 
   const [token, setToken] = useState(null);
- 
 
   useEffect(() => {
-    // Clean up any invalid auth state
     const storedToken = localStorage.getItem("token");
-    console.log(userId)
     const storedUserId = localStorage.getItem("userId");
-    console.log(token)
-    
+
     if (!storedToken || !storedUserId) {
-      // If either is missing, clear both
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
-      setUserId(null);
-      setToken(null);
-    } else {
-      // Only set if both exist
+      clearAuth();
+      return;
+    }
+
+    try {
+      const { exp } = jwtDecode(storedToken); // exp is in seconds
+      if (Date.now() >= exp * 1000) {
+        // Token expired
+        clearAuth();
+        return;
+      }
+
+      // Token valid
       setUserId(storedUserId);
       setToken(storedToken);
+    } catch (err) {
+     console.log(err);
+      clearAuth();
     }
-  }, []); // Run only on mount
+  }, []);
+
+  const clearAuth = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setUserId(null);
+    setToken(null);
+  };
 
   const login = (id, newToken) => {
     if (!id || !newToken) {
@@ -44,12 +54,9 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    // Clear all auth-related data
-    localStorage.clear(); // or use removeItem for specific items
+    clearAuth();
     sessionStorage.clear();
-    setUserId(null);
-    setToken(null);
-    navigate("/login"); 
+    navigate("/login");
   };
 
   const isLoggedIn = !!userId && !!token;
