@@ -16,9 +16,7 @@ function TopBar() {
     <header>
       <h1>My App</h1>
       {isLoggedIn && (
-        <button
-          onClick={handleLogout}
-        >
+        <button onClick={handleLogout} >
           Logout
         </button>
       )}

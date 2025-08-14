@@ -19,14 +19,14 @@ const AuthProvider = ({ children }) => {
     }
 
     try {
-      const { exp } = jwtDecode(storedToken); // exp is in seconds
+      const { exp } = jwtDecode(storedToken); 
       if (Date.now() >= exp * 1000) {
-        // Token expired
+       
         clearAuth();
         return;
       }
 
-      // Token valid
+      
       setUserId(storedUserId);
       setToken(storedToken);
     } catch (err) {
