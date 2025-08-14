@@ -1,56 +1,75 @@
 import { useState, useEffect } from "react";
-import api from "../services/api"; 
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 function Archive() {
-  const [activeTab, setActiveTab] = useState("chats"); 
+  const [activeTab, setActiveTab] = useState("chats");
   const [chats, setChats] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    if (activeTab === "chats") {
-      api.get("/chats") // backend route to fetch chats
-        .then(res => setChats(res.data))
-        .finally(() => setLoading(false));
-    } else {
-      api.get("/documents") // backend route to fetch documents
-        .then(res => setDocuments(res.data))
-        .finally(() => setLoading(false));
-    }
+    const endpoint = activeTab === "chats" ? "/chats" : "/documents";
+    api.get(endpoint)
+      .then(res => {
+        if (activeTab === "chats") {
+          setChats(res.data);
+        } else {
+          setDocuments(res.data);
+        }
+      })
+      .finally(() => setLoading(false));
   }, [activeTab]);
+
+  const handleCardClick = (type, id) => {
+    navigate(`/${type}/${id}`);
+  };
 
   return (
     <div>
       <h2>Archive</h2>
+
       <div>
-        <button
-          onClick={() => setActiveTab("chats")}
-        >
-          Chats
-        </button>
-        <button
-          onClick={() => setActiveTab("documents")}
-        >
-          Documents
-        </button>
+        <button onClick={() => setActiveTab("chats")}>Chats</button>
+        <button onClick={() => setActiveTab("documents")}>Documents</button>
       </div>
 
+      {loading && <p>Loading...</p>}
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : activeTab === "chats" ? (
-        <ul>
+      {!loading && activeTab === "chats" && (
+        <div>
           {chats.map(chat => (
-            <li key={chat.id}>{chat.title || chat.id}</li>
+            <div
+              key={chat.id}
+              onClick={() => handleCardClick("chat", chat.id)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => { if (e.key === "Enter") handleCardClick("chat", chat.id); }}
+            >
+              <h3>{chat.title || `Chat ${chat.id}`}</h3>
+              <p>{chat.preview || "No preview available"}</p>
+            </div>
           ))}
-        </ul>
-      ) : (
-        <ul>
+        </div>
+      )}
+
+      {!loading && activeTab === "documents" && (
+        <div>
           {documents.map(doc => (
-            <li key={doc.id}>{doc.name || doc.id}</li>
+            <div
+              key={doc.id}
+              onClick={() => handleCardClick("document", doc.id)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => { if (e.key === "Enter") handleCardClick("document", doc.id); }}
+            >
+              <h3>{doc.name || `Document ${doc.id}`}</h3>
+              <p>{doc.description || "No description available"}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
