@@ -1,25 +1,26 @@
-
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import AuthContext from "../services/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 function TopBar() {
   const { logout, isLoggedIn } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate("/login");
+    logout(); // Just clears state/storage, no navigation
   };
 
   return (
     <header>
       <h1>My App</h1>
-      {isLoggedIn && (
-        <button onClick={handleLogout} >
-          Logout
-        </button>
-      )}
+      <nav>
+        <Link to="/archive">Archive</Link>
+        {" | "}
+        {isLoggedIn ? (
+          <button onClick={handleLogout}>Logout</button>
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
+      </nav>
     </header>
   );
 }

@@ -1,9 +1,10 @@
 import Chat  from "./Chat"
-import { Link } from "react-router-dom"
+import TopBar from "./TopBar"
 export default function Home(){
     return( <>
     <Chat /> 
-   <Link to="/login">Login page</Link>
+  
+   <TopBar/>
     </>)
    
     
