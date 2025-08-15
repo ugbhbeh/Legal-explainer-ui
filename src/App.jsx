@@ -7,6 +7,7 @@ import AuthContext from './services/AuthContext'
 import Archive from './components/Archive'
 import ChatDetails from './components/ChatDetails'
 import DocumentDetails from './components/DocumentDetails'
+import TopBar from './components/TopBar'
 import { useContext } from 'react'
 
 function AppRoutes() {
@@ -28,6 +29,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+         <TopBar />
         <AppRoutes />
       </AuthProvider>
     </BrowserRouter>
