@@ -8,6 +8,31 @@ function DocumentDetails() {
   const [document, setDocument] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const handleDeleteDocument = async () => {
+    if (window.confirm('Are you sure you want to delete this document?')) {
+      try {
+        await api.delete(`/document/${id}`);
+        navigate('/archive');
+      } catch (error) {
+        console.error('Failed to delete document:', error);
+        alert('Failed to delete document');
+      }
+    }
+  };
+
+  const handleDeleteExplanation = async (explanationId) => {
+    if (window.confirm('Are you sure you want to delete this explanation?')) {
+      try {
+        await api.delete(`/document/explanations/${explanationId}`);
+        const response = await api.get(`/document/${id}/with-explanation`);
+        setDocument(response.data);
+      } catch (error) {
+        console.error('Failed to delete explanation:', error);
+        alert('Failed to delete explanation');
+      }
+    }
+  };
+
   useEffect(() => {
     async function fetchDocument() {
       try {
@@ -52,9 +77,11 @@ function DocumentDetails() {
       <div className="mb-4 flex justify-between items-center">
         <button 
           onClick={() => navigate("/archive")}
-          className="text-blue-500 hover:text-blue-700"
         >
           ← Back to Archive
+        </button>
+        <button onClick={handleDeleteDocument}>
+          Delete Document
         </button>
         <div className="text-right text-gray-500">
           <div>Created: {new Date(document.createdAt).toLocaleString()}</div>
@@ -77,12 +104,15 @@ function DocumentDetails() {
               className="bg-white shadow-lg rounded-lg p-6"
             >
               <div className="flex justify-between items-center mb-4">
-                <span className="text-gray-500">
+                <span>
                   {new Date(explanation.createdAt).toLocaleString()}
                 </span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                  Tone: {explanation.tone}
-                </span>
+                <div>
+                  <span>Tone: {explanation.tone}</span>
+                  <button onClick={() => handleDeleteExplanation(explanation.id)}>
+                    Delete Explanation
+                  </button>
+                </div>
               </div>
               <p className="text-gray-700 whitespace-pre-wrap">
                 {explanation.summary}

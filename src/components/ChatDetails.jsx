@@ -8,6 +8,18 @@ function ChatDetails() {
   const [chat, setChat] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this chat?')) {
+      try {
+        await api.delete(`/chats/${id}`);
+        navigate('/archive');
+      } catch (error) {
+        console.error('Failed to delete chat:', error);
+        alert('Failed to delete chat');
+      }
+    }
+  };
+
   useEffect(() => {
     async function fetchChat() {
       try {
@@ -52,9 +64,11 @@ function ChatDetails() {
       <div className="mb-4 flex justify-between items-center">
         <button 
           onClick={() => navigate("/archive")}
-          className="text-blue-500 hover:text-blue-700"
         >
           ← Back to Archive
+        </button>
+        <button onClick={handleDelete}>
+          Delete Chat
         </button>
         <span className="text-gray-500">
           {new Date(chat.createdAt).toLocaleString()}
