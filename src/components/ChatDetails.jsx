@@ -61,29 +61,37 @@ function ChatDetails() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <div className="mb-4 flex justify-between items-center">
+      <div className="mb-6 flex justify-between items-center">
         <button 
           onClick={() => navigate("/archive")}
+          className="flex items-center text-blue-600 hover:text-blue-700 transition-colors"
         >
-          ← Back to Archive
+          <span className="text-xl mr-1">←</span> Back to Archive
         </button>
-        <button onClick={handleDelete}>
+        <button 
+          onClick={handleDelete}
+          className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+        >
           Delete Chat
         </button>
-        <span className="text-gray-500">
+        <span className="text-gray-500 text-sm">
           {new Date(chat.createdAt).toLocaleString()}
         </span>
       </div>
 
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <div className="mb-6 pb-6 border-b">
-          <h3 className="text-lg font-semibold mb-2">Question</h3>
-          <p className="text-gray-700 whitespace-pre-wrap">{chat.input}</p>
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="p-8 mb-6 border-b bg-gray-50">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">Question</h3>
+          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed bg-white p-6 rounded-lg shadow-sm">
+            {chat.input}
+          </p>
         </div>
 
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Response</h3>
-          <p className="text-gray-700 whitespace-pre-wrap">{chat.response}</p>
+        <div className="p-8">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">Response</h3>
+          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed bg-blue-50 p-6 rounded-lg">
+            {chat.response}
+          </p>
         </div>
       </div>
     </div>

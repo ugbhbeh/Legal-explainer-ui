@@ -82,49 +82,66 @@ function DocumentDetails() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-4 flex justify-between items-center">
-        <button onClick={() => navigate("/archive")}>← Back to Archive</button>
+      <div className="mb-6 flex justify-between items-center">
+        <button 
+          onClick={() => navigate("/archive")}
+          className="flex items-center text-blue-600 hover:text-blue-700 transition-colors"
+        >
+          <span className="text-xl mr-1">←</span> Back to Archive
+        </button>
 
         <div ref={dropdownRef} className="relative">
-          <button onClick={() => setShowDropdown(!showDropdown)}>•••</button>
+          <button 
+            onClick={() => setShowDropdown(!showDropdown)}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <span className="text-2xl text-gray-600">•••</span>
+          </button>
           {showDropdown && (
-            <div className="absolute right-0 top-full border bg-white z-10">
-              <button onClick={handleDeleteDocument}>Delete Document</button>
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
+              <button 
+                onClick={handleDeleteDocument}
+                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-red-600"
+              >
+                Delete Document
+              </button>
             </div>
           )}
         </div>
 
-        <div className="text-right text-gray-500">
+        <div className="text-right text-gray-500 text-sm">
           <div>Created: {new Date(document.createdAt).toLocaleString()}</div>
           {document.updatedAt !== document.createdAt && (
-            <div>Updated: {new Date(document.updatedAt).toLocaleString()}</div>
+            <div className="mt-1">Updated: {new Date(document.updatedAt).toLocaleString()}</div>
           )}
         </div>
       </div>
 
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h2 className="text-2xl font-bold mb-4">{document.title}</h2>
+      <div className="bg-white shadow-lg rounded-lg p-8 mb-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">{document.title}</h2>
       </div>
 
       {document.explanations?.length > 0 ? (
-        <div className="space-y-6">
-          <h3 className="text-xl font-semibold">Explanations</h3>
+        <div className="space-y-8">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-6">Explanations</h3>
           {document.explanations.map((explanation, index) => (
-            <div key={explanation.id || index} className="bg-white shadow-lg rounded-lg p-6">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-gray-500">
+            <div key={explanation.id || index} className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow">
+              <div className="flex justify-between items-center mb-4 pb-4 border-b">
+                <span className="text-gray-500 text-sm">
                   {new Date(explanation.createdAt).toLocaleString()}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span>Tone: {explanation.tone}</span>
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                    Tone: {explanation.tone}
+                  </span>
                 </div>
               </div>
-              <p className="text-gray-700 whitespace-pre-wrap">{explanation.summary}</p>
+              <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{explanation.summary}</p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center text-gray-500 mt-8">
+        <div className="text-center text-gray-500 mt-12 p-8 bg-gray-50 rounded-lg">
           No explanations available for this document
         </div>
       )}

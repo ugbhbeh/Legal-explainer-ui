@@ -91,38 +91,61 @@ export default function Chat() {
   }
 
   return (
-    <div>
-      <div>
-        {messages.map(({ id, role, text }) => (
-          <div key={id} style={{ marginBottom: 8 }}>
-            <b>{role === "user" ? "You:" : "AI:"}</b> {text}
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="bg-white rounded-lg shadow-lg p-6 min-h-[60vh] flex flex-col">
+        <div className="flex-1 mb-6 overflow-y-auto">
+          {messages.map(({ id, role, text }) => (
+            <div 
+              key={id} 
+              className={`mb-4 p-4 rounded-lg ${
+                role === "user" 
+                  ? "bg-blue-100 ml-auto max-w-[80%]" 
+                  : "bg-gray-100 mr-auto max-w-[80%]"
+              }`}
+            >
+              <div className="font-semibold mb-1 text-sm text-gray-600">
+                {role === "user" ? "You" : "AI Assistant"}
+              </div>
+              <div className="text-gray-800 whitespace-pre-wrap">{text}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="border-t pt-4">
+          <textarea
+            rows={3}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Type your legal text or question..."
+            disabled={loading}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mb-4"
+          />
+
+          <div className="flex items-center gap-4">
+            <label className="flex-1">
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => setFile(e.target.files[0])}
+                disabled={loading}
+                className="hidden"
+              />
+              <div className="cursor-pointer px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50 transition-colors text-center">
+                {file ? file.name : "Upload PDF"}
+              </div>
+            </label>
+
+            <button
+              onClick={sendMessage}
+              disabled={loading || (!input.trim() && !file)}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Sending..." : "Send"}
+            </button>
           </div>
-        ))}
+        </div>
       </div>
-
-      <textarea
-        rows={3}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Type your legal text or question..."
-        disabled={loading}
-      />
-
-      <input
-        type="file"
-        accept="application/pdf"
-        onChange={(e) => setFile(e.target.files[0])}
-        disabled={loading}
-        style={{ display: "block", marginTop: 8 }}
-      />
-
-      <button
-        onClick={sendMessage}
-        disabled={loading || (!input.trim() && !file)}
-      >
-        {loading ? "Sending..." : "Send"}
-      </button>
     </div>
   );
 }
