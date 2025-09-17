@@ -36,7 +36,6 @@ function Sidebar() {
 
   return (
     <div className="w-72 bg-white border-r flex flex-col h-full">
-      {/* Tabs */}
       <div className="flex border-b">
         <button
           onClick={() => setActiveTab("chats")}
