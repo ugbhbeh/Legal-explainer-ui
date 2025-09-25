@@ -13,7 +13,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting
+    setIsSubmitting(true)
     try {
       const response = await api.post('/users/login', {
         email,
