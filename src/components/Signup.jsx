@@ -14,7 +14,6 @@ function Signup() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-
   const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
@@ -41,7 +40,6 @@ function Signup() {
         login(response.data.userId, response.data.token);
         navigate('/');
       } else {
-        // fallback: if no token returned, redirect to login
         navigate('/login');
       }
     } catch (error) {
@@ -55,7 +53,7 @@ function Signup() {
     }
   };
 
-  // === Guest login handler ===
+
   const handleGuestLogin = async () => {
     setError('');
     setIsSubmitting(true);
@@ -80,68 +78,67 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-background">
-      <div className="card-social w-full max-w-md p-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-secondary mb-8">Sign Up</h2>
-          {error && <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-4">{error}</div>}
-          <div className="space-y-4">
-            <input
-              type="email"
-              name="email"
-              autoComplete="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="input-social bg-surface text-secondary border border-accent/30 focus:border-primary placeholder:text-accent"
-            />
-            <input
-              type="text"
-              name="username"
-              autoComplete="username"
-              placeholder="Username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-              className="input-social bg-surface text-secondary border border-accent/30 focus:border-primary placeholder:text-accent"
-            />
-            <input
-              type="password"
-              name="password"
-              autoComplete="new-password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="input-social bg-surface text-secondary border border-accent/30 focus:border-primary placeholder:text-accent"
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary w-full"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Signing Up...' : 'Sign Up'}
-          </button>
-        </form>
+    <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-2xl shadow-lg">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
 
-        <div className="mt-6 text-center">
-          <p className="text-accent mb-2">Or continue as guest:</p>
-          <button
-            onClick={handleGuestLogin}
-            disabled={isSubmitting}
-            className="btn btn-secondary w-full"
-          >
-            {isSubmitting ? 'Logging in as Guest...' : 'Continue as Guest'}
-          </button>
-          <p className="text-center text-accent mt-4">
-            Already have an account?{' '}
-            <Link to="/login" className="text-primary hover:text-primary/90">
-              Login
-            </Link>
-          </p>
-        </div>
+        {error && (
+          <div className="p-2 text-sm text-red-600 bg-red-100 rounded">{error}</div>
+        )}
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+        >
+          {isSubmitting ? 'Signing Up...' : 'Sign Up'}
+        </button>
+      </form>
+
+      <div className="mt-6 text-center space-y-4">
+        <p className="text-gray-600">Or continue as guest:</p>
+        <button
+          onClick={handleGuestLogin}
+          disabled={isSubmitting}
+          className="mt-2 w-full py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition disabled:opacity-50"
+        >
+          {isSubmitting ? 'Logging in as Guest...' : 'Continue as Guest'}
+        </button>
+
+        <p className="text-sm text-gray-600 mt-4">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );

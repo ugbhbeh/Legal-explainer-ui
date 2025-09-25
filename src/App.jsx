@@ -27,10 +27,8 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className="min-h-screen bg-gray-50">
           <TopBar />
           <AppRoutes />
-        </div>
       </AuthProvider>
     </BrowserRouter>
   );
