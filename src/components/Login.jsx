@@ -8,9 +8,12 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting
     try {
       const response = await api.post('/users/login', {
         email,
@@ -24,50 +27,59 @@ function Login() {
         alert('Login failed. Please try again.');
       }
     } catch (error) {
-      console.log('Login failed', error);
+      setError(error)
       alert('Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-background">
-      <div className="card-social w-full max-w-md p-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <h2 className="text-2xl font-bold text-center text-secondary mb-8">Welcome Back</h2>
-          <div className="space-y-4">
-            <div>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="input-social bg-surface text-secondary border border-accent/30 focus:border-primary placeholder:text-accent"
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-social bg-surface text-secondary border border-accent/30 focus:border-primary placeholder:text-accent"
-                required
-              />
-            </div>
-          </div>
-          <button type="submit" className="btn btn-primary w-full">
-            Login
-          </button>
-          <p className="text-center text-accent mt-4">
-            Don't have an account?{' '}
-            <Link to="/signup" className="text-primary hover:text-primary/90">
-              Sign up
-            </Link>
-          </p>
-        </form>
+<form
+      onSubmit={handleSubmit}
+      className="max-w-md mx-auto mt-20 p-6 bg-white rounded-2xl shadow-lg"
+    >
+      <h2 className="text-2xl font-bold text-center mb-6">Welcome Back</h2>
+
+      {error && (
+        <div className="p-2 text-sm text-red-600 bg-red-100 rounded mb-4">
+          {error}
+        </div>
+      )}
+
+      <div className="space-y-4">
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
       </div>
-    </div>
-  );
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full mt-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+      >
+        {isSubmitting ? "Logging in..." : "Login"}
+      </button>
+
+      <p className="mt-4 text-center text-sm text-gray-600">
+        Don&apos;t have an account?{" "}
+        <Link to="/signup" className="text-blue-600 hover:underline">
+          Sign up
+        </Link>
+      </p>
+    </form>
+  )
 }
 export default Login;
