@@ -84,7 +84,7 @@ function Login() {
         </p>
       </form>
 
-      <div>hello</div>
+      <div className="tex">hello</div>
     </div>
 
   );
