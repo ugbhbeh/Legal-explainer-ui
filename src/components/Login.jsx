@@ -32,8 +32,6 @@ function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-blue-600 text-white p-4">Tailwind Test</div>
-
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl"
@@ -83,8 +81,6 @@ function Login() {
           </Link>
         </p>
       </form>
-
-      <div className="tex">hello</div>
     </div>
 
   );
