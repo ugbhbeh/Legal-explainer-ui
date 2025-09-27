@@ -7,6 +7,7 @@ import AuthContext from './services/AuthContext'
 import ChatDetails from './components/ChatDetails'
 import DocumentDetails from './components/DocumentDetails'
 import TopBar from './components/TopBar'
+import Sidebar from './components/SideBar'
 import { useContext } from 'react'
 
 function AppRoutes() {
@@ -27,11 +28,23 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-          <TopBar />
-          <AppRoutes />
+       <div className="flex flex-col h-screen">
+  {/* Top bar at the top */}
+  <TopBar />
+
+  {/* Rest of the screen: sidebar + main content */}
+  <div className="flex flex-1">
+    {/* Sidebar below top bar */}
+    <Sidebar className="h-full" />
+
+    {/* Main content */}
+    <main className="flex-1 overflow-y-auto">
+              <AppRoutes /> {/* Page content changes here */}
+            </main>
+          </div>
+        </div>
       </AuthProvider>
     </BrowserRouter>
   );
 }
-
 export default App;
