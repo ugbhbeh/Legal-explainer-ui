@@ -7,6 +7,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const [tone, setTone] = useState("neutral");
   const { userId, isLoggedIn } = useContext(AuthContext);
 
   async function handleFileUpload() {
@@ -47,7 +48,7 @@ export default function Chat() {
         const response = await api.post("/document", {
           question: input || "Explain this document",
           documentId,
-          tone: "neutral" // make this configurable 
+          tone
         });
 
         aiMessage = {
@@ -60,6 +61,7 @@ export default function Chat() {
         const response = await api.post("/chats", {
           input,
           userId,
+          tone
         });
 
         aiMessage = {
@@ -135,7 +137,17 @@ export default function Chat() {
                 {file ? file.name : "Upload PDF"}
               </div>
             </label>
-
+            <select
+              value={tone}
+              onChange={(e) => setTone(e.target.value)}
+              disabled={loading}
+              className="px-4 py-2 border rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="neutral">Neutral</option>
+              <option value="formal">Formal</option>
+              <option value="informal">Informal</option>
+              <option value="legal">Legal Terms</option>
+            </select>
             <button
               onClick={sendMessage}
               disabled={loading || (!input.trim() && !file)}
