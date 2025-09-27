@@ -12,7 +12,6 @@ function ChatDetails() {
     if (window.confirm('Are you sure you want to delete this chat?')) {
       try {
         await api.delete(`/chats/${id}`);
-        navigate('/archive');
       } catch (error) {
         console.error('Failed to delete chat:', error);
         alert('Failed to delete chat');
@@ -29,7 +28,6 @@ function ChatDetails() {
         console.error("Failed to fetch chat:", error);
         if (error.response?.status === 404) {
           alert("Chat not found");
-          navigate("/archive");
         } else if (error.response?.status === 401) {
           navigate("/login");
         } else {
@@ -62,12 +60,7 @@ function ChatDetails() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="mb-6 flex justify-between items-center">
-        <button 
-          onClick={() => navigate("/archive")}
-          className="flex items-center text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          <span className="text-xl mr-1">←</span> Back to Archive
-        </button>
+      
         <button 
           onClick={handleDelete}
           className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"

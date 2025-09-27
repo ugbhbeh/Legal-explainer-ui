@@ -33,7 +33,6 @@ function DocumentDetails() {
         console.error("Failed to fetch document:", error);
         if (error.response?.status === 404) {
           alert("Document not found");
-          navigate("/archive");
         } else if (error.response?.status === 401) {
           navigate("/login");
         } else {
@@ -51,12 +50,10 @@ function DocumentDetails() {
     if (window.confirm("Are you sure you want to delete this document and all related data?")) {
       try {
         await api.delete(`/document/${id}`);
-        navigate("/archive");
       } catch (error) {
         console.error("Failed to delete document:", error);
         if (error.response?.status === 404) {
           alert("Document not found or already deleted");
-          navigate("/archive");
         } else {
           alert("Failed to delete document and related data");
         }
@@ -83,12 +80,7 @@ function DocumentDetails() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-6 flex justify-between items-center">
-        <button 
-          onClick={() => navigate("/archive")}
-          className="flex items-center text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          <span className="text-xl mr-1">←</span> Back to Archive
-        </button>
+       
 
         <div ref={dropdownRef} className="relative">
           <button 
