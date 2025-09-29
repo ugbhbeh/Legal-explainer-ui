@@ -93,71 +93,74 @@ export default function Chat() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="bg-white rounded-lg shadow-lg p-6 min-h-[60vh] flex flex-col">
-        <div className="flex-1 mb-6 overflow-y-auto">
-          {messages.map(({ id, role, text }) => (
-            <div 
-              key={id} 
-              className={`mb-4 p-4 rounded-lg ${
-                role === "user" 
-                  ? "bg-blue-100 ml-auto max-w-[80%]" 
-                  : "bg-gray-100 mr-auto max-w-[80%]"
-              }`}
-            >
-              <div className="font-semibold mb-1 text-sm text-gray-600">
-                {role === "user" ? "You" : "AI Assistant"}
-              </div>
-              <div className="text-gray-800 whitespace-pre-wrap">{text}</div>
+  <div className="flex flex-col h-full p-6">
+    <div className="bg-white rounded-lg shadow-lg flex flex-col flex-1">
+      
+      {/* Messages area */}
+      <div className="flex-1 overflow-y-auto p-4">
+        {messages.map(({ id, role, text }) => (
+          <div
+            key={id}
+            className={`mb-4 p-4 rounded-lg ${
+              role === "user"
+                ? "bg-blue-100 ml-auto max-w-[80%]"
+                : "bg-gray-100 mr-auto max-w-[80%]"
+            }`}
+          >
+            <div className="font-semibold mb-1 text-sm text-gray-600">
+              {role === "user" ? "You" : "AI Assistant"}
             </div>
-          ))}
-        </div>
-
-        <div className="border-t pt-4">
-          <textarea
-            rows={3}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your legal text or question..."
-            disabled={loading}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mb-4"
-          />
-
-          <div className="flex items-center gap-4">
-            <label className="flex-1">
-              <input
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => setFile(e.target.files[0])}
-                disabled={loading}
-                className="hidden"
-              />
-              <div className="cursor-pointer px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50 transition-colors text-center">
-                {file ? file.name : "Upload PDF"}
-              </div>
-            </label>
-            <select
-              value={tone}
-              onChange={(e) => setTone(e.target.value)}
-              disabled={loading}
-              className="px-4 py-2 border rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="neutral">Neutral</option>
-              <option value="formal">Formal</option>
-              <option value="informal">Informal</option>
-              <option value="legal">Legal Terms</option>
-            </select>
-            <button
-              onClick={sendMessage}
-              disabled={loading || (!input.trim() && !file)}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Sending..." : "Send"}
-            </button>
+            <div className="text-gray-800 whitespace-pre-wrap">{text}</div>
           </div>
+        ))}
+      </div>
+
+      {/* Input area */}
+      <div className="border-t p-4">
+        <textarea
+          rows={3}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your legal text or question..."
+          disabled={loading}
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none mb-4"
+        />
+
+        <div className="flex items-center gap-4">
+          <label className="flex-1">
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => setFile(e.target.files[0])}
+              disabled={loading}
+              className="hidden"
+            />
+            <div className="cursor-pointer px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50 transition-colors text-center">
+              {file ? file.name : "Upload PDF"}
+            </div>
+          </label>
+          <select
+            value={tone}
+            onChange={(e) => setTone(e.target.value)}
+            disabled={loading}
+            className="px-4 py-2 border rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="neutral">Neutral</option>
+            <option value="formal">Formal</option>
+            <option value="informal">Informal</option>
+            <option value="legal">Legal Terms</option>
+          </select>
+          <button
+            onClick={sendMessage}
+            disabled={loading || (!input.trim() && !file)}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Sending..." : "Send"}
+          </button>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
