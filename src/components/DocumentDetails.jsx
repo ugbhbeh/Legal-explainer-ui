@@ -12,7 +12,6 @@ function DocumentDetails() {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -23,7 +22,7 @@ function DocumentDetails() {
     return () => window.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fetch document details
+
   useEffect(() => {
     async function fetchDocument() {
       try {
@@ -50,7 +49,7 @@ function DocumentDetails() {
       try {
         await api.delete(`/document/${id}`);
         alert("Document deleted successfully");
-        navigate("/documents"); // redirect to list page
+        navigate("/documents");
       } catch (error) {
         console.error("Failed to delete document:", error);
         if (error.response?.status === 404) {
@@ -78,16 +77,13 @@ function DocumentDetails() {
     );
   }
 
-  // Determine preview style
+
   const previewStyle = expanded ? "max-h-none" : "max-h-48 overflow-hidden";
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      {/* Header with title, dropdown, timestamps */}
       <div className="mb-6 flex justify-between items-start">
         <h2 className="text-3xl font-bold text-gray-800">{document.title}</h2>
-
-        {/* Dropdown */}
         <div ref={dropdownRef} className="relative ml-4">
           <button
             onClick={() => setShowDropdown(!showDropdown)}
@@ -107,7 +103,7 @@ function DocumentDetails() {
           )}
         </div>
 
-        {/* Timestamps */}
+     
         <div className="text-right text-gray-500 text-sm ml-4">
           <div>Created: {new Date(document.createdAt).toLocaleString()}</div>
           {document.updatedAt !== document.createdAt && (
@@ -116,7 +112,6 @@ function DocumentDetails() {
         </div>
       </div>
 
-      {/* Document Content */}
       {document.content && (
         <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
           <div className={`text-gray-700 whitespace-pre-wrap leading-relaxed transition-all ${previewStyle}`}>
@@ -133,7 +128,6 @@ function DocumentDetails() {
         </div>
       )}
 
-      {/* Explanations */}
       {document.explanations?.length > 0 ? (
         <div className="space-y-8">
           <h3 className="text-2xl font-semibold text-gray-800 mb-6">Explanations</h3>

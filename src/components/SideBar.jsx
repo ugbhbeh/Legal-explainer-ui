@@ -8,7 +8,7 @@ function Sidebar() {
   const [chats, setChats] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(""); // new
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
   const { isLoggedIn } = useContext(AuthContext);
 

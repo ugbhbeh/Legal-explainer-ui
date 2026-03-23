@@ -95,8 +95,6 @@ export default function Chat() {
   return (
   <div className="flex flex-col h-full p-6">
     <div className="bg-white rounded-lg shadow-lg flex flex-col flex-1">
-      
-      {/* Messages area */}
       <div className="flex-1 overflow-y-auto p-4">
         {messages.map(({ id, role, text }) => (
           <div
@@ -115,7 +113,6 @@ export default function Chat() {
         ))}
       </div>
 
-      {/* Input area */}
       <div className="border-t p-4">
         <textarea
           rows={3}

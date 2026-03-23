@@ -29,17 +29,14 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
        <div className="flex flex-col h-screen">
-  {/* Top bar at the top */}
+
   <TopBar />
 
-  {/* Rest of the screen: sidebar + main content */}
-  <div className="flex flex-1">
-    {/* Sidebar below top bar */}
-    <Sidebar className="h-full" />
 
-    {/* Main content */}
+  <div className="flex flex-1">
+    <Sidebar className="h-full" />
     <main className="flex-1 overflow-y-auto">
-              <AppRoutes /> {/* Page content changes here */}
+              <AppRoutes /> 
             </main>
           </div>
         </div>
