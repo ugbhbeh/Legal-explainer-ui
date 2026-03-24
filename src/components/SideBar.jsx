@@ -62,7 +62,7 @@ function Sidebar() {
           <div
             key={chat.id}
             onClick={() => handleCardClick("chats", chat.id)}
-            className="p-3 mb-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-300"
+            className="p-3 mb-3 bg-gray-100 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer hover:border-blue-300"
           >
             <h3 className="font-semibold text-gray-800 text-sm">
               Chat from {new Date(chat.createdAt).toLocaleDateString()}
@@ -96,13 +96,13 @@ function Sidebar() {
   };
 
   return (
-    <div className="w-72 bg-white border-r flex flex-col h-full">
+    <div className="w-72 bg-gray-25 border-r flex flex-col h-full">
       <div className="flex border-b">
         <button
           onClick={() => setActiveTab("chats")}
           className={`flex-1 py-3 font-medium text-sm ${
             activeTab === "chats"
-              ? "bg-blue-600 text-white"
+              ? "bg-blue-500 text-white"
               : "hover:bg-gray-50 text-gray-600"
           }`}
         >
@@ -112,7 +112,7 @@ function Sidebar() {
           onClick={() => setActiveTab("documents")}
           className={`flex-1 py-3 font-medium text-sm ${
             activeTab === "documents"
-              ? "bg-blue-600 text-white"
+              ? "bg-blue-500 text-white"
               : "hover:bg-gray-50 text-gray-600"
           }`}
         >

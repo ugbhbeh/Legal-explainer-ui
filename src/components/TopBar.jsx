@@ -19,7 +19,7 @@ function TopBar() {
   };
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-gray-100 shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
        <h1 className="text-2xl font-bold text-blue-600">
   <Link to="/">Legal Assistant</Link>
@@ -29,13 +29,13 @@ function TopBar() {
             <>
               <button 
                 onClick={handleDeleteAccount}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition-colors"
               >
                 Delete Account
               </button>
               <button 
                 onClick={logout}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 bg-slate-500 text-white rounded-lg hover:bg-red-500 transition-colors"
               >
                 Logout
               </button>
