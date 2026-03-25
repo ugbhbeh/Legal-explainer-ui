@@ -78,12 +78,12 @@ function Signup() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-2xl shadow-lg">
+    <div className="max-w-md mx-auto mt-16 p-6 bg-gray-50 rounded-2xl shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-4">
         <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
 
         {error && (
-          <div className="p-2 text-sm text-red-600 bg-red-100 rounded">{error}</div>
+          <div className="p-2 text-sm text-red-600 bg-red-100 rounded">Enter valid Email and Password</div>
         )}
 
         <input
@@ -93,7 +93,7 @@ function Signup() {
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 "
         />
         <input
           type="text"
