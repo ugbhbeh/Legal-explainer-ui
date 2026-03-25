@@ -102,7 +102,7 @@ function Sidebar() {
           onClick={() => setActiveTab("chats")}
           className={`flex-1 py-3 font-medium text-sm ${
             activeTab === "chats"
-              ? "bg-blue-500 text-white"
+              ? "bg-blue-500 text-white hover:bg-blue-600"
               : "hover:bg-gray-50 text-gray-600"
           }`}
         >
@@ -112,7 +112,7 @@ function Sidebar() {
           onClick={() => setActiveTab("documents")}
           className={`flex-1 py-3 font-medium text-sm ${
             activeTab === "documents"
-              ? "bg-blue-500 text-white"
+              ? "bg-blue-500 text-white hover:bg-blue-600"
               : "hover:bg-gray-50 text-gray-600"
           }`}
         >

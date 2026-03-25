@@ -30,7 +30,6 @@ function TopBar() {
       <nav className="flex items-center gap-4">
         {isLoggedIn ? (
           <>
-            {/* Logout Button */}
             <button 
               onClick={logout}
               className="px-5 py-2 bg-slate-600 text-white rounded-lg hover:bg-red-500 transition-all duration-200 shadow-sm"
@@ -38,9 +37,7 @@ function TopBar() {
               Logout
             </button>
 
-            {/* Dropdown Container */}
             <div className="relative">
-              {/* Trigger Button */}
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="p-2 rounded-full hover:bg-gray-200 transition-all duration-200"
@@ -48,7 +45,6 @@ function TopBar() {
                 <span className="text-2xl text-gray-700">⋯</span>
               </button>
 
-              {/* Dropdown Menu */}
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden animate-fade-in">
                   

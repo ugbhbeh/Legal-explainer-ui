@@ -134,7 +134,7 @@ function DocumentDetails() {
           {document.explanations.map((explanation) => (
             <div
               key={explanation.id}
-              className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow"
+              className="bg-slate-200 shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow"
             >
               <div className="flex justify-between items-center mb-4 pb-4 border-b">
                 <span className="text-gray-500 text-sm">

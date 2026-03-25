@@ -7,6 +7,7 @@ function ChatDetails() {
   const navigate = useNavigate();
   const [chat, setChat] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this chat?')) {
@@ -57,38 +58,61 @@ function ChatDetails() {
     );
   }
 
-  return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <div className="mb-6 flex justify-between items-center">
+ return (
+  <div className="container mx-auto px-4 py-8 max-w-3xl">
+    
+    <div className="mb-6 flex justify-between items-center">
       
-        <button 
-          onClick={handleDelete}
-          className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+      {/* LEFT SIDE (Dropdown) */}
+      <div className="relative">
+        <button
+          onClick={() => setShowDropdown(!showDropdown)}
+          className="p-2 rounded-full hover:bg-gray-200 transition-all duration-200"
         >
-          Delete Chat
+          <span className="text-2xl text-gray-700">⋯</span>
         </button>
-        <span className="text-gray-500 text-sm">
-          {new Date(chat.createdAt).toLocaleString()}
-        </span>
+
+        {showDropdown && (
+          <div className="absolute left-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50">
+            
+            <button 
+              onClick={handleDelete}
+              className="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors"
+            >
+             Delete Chat
+            </button>
+
+          </div>
+        )}
       </div>
 
-      <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="p-8 mb-6 border-b bg-gray-50">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Question</h3>
-          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed bg-white p-6 rounded-lg shadow-sm">
-            {chat.input}
-          </p>
-        </div>
+      <span className="text-gray-500 text-sm">
+        {new Date(chat.createdAt).toLocaleString()}
+      </span>
 
-        <div className="p-8">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Response</h3>
-          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed bg-blue-50 p-6 rounded-lg">
-            {chat.response}
-          </p>
-        </div>
-      </div>
     </div>
-  );
+
+    
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+      
+      <div className="p-8 mb-6 border-b bg-gray-25">
+        <h3 className="text-xl font-semibold mb-4 text-gray-800">Question</h3>
+        <p className="text-gray-700 whitespace-pre-wrap leading-relaxed bg-gray-50 p-6 rounded-lg shadow-sm">
+          {chat.input}
+        </p>
+      </div>
+
+      <div className="p-8">
+        <h3 className="text-xl font-semibold mb-4 text-gray-800">Response</h3>
+        <p className="text-gray-700 whitespace-pre-wrap leading-relaxed bg-blue-50 p-6 rounded-lg">
+          {chat.response}
+        </p>
+      </div>
+
+    </div>
+  </div>
+);
+
 }
 
 export default ChatDetails;
