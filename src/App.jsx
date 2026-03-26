@@ -35,7 +35,7 @@ function App() {
 
   <div className="flex flex-1">
     <Sidebar className="h-full" />
-    <main className="flex-1 overflow-y-auto bg-gray-50">
+    <main className="flex-1 bg-gray-50 flex">
               <AppRoutes /> 
             </main>
           </div>
